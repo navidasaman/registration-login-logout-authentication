@@ -51,7 +51,7 @@ const App: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="bg-slate-200 p-8 shadow-md rounded-md">
+      <div className="bg-slate-100 p-8 shadow-md rounded-md">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         <input
           type="text"
