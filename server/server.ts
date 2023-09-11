@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
   host: '[sensitive data, edited out]',
   user: '[sensitive data, edited out]',
   password: '[sensitive data, edited out]',
-  port: 3306,
+  port: '[sensitive data, edited out]',
   database: '[sensitive data, edited out]',
 });
 connection.connect((err) => {
@@ -102,6 +102,21 @@ app.post(`${process.env.LOGIN_ENDPOINT}`, (req: Request, res: Response) => {
       });
     }
   );
+});
+
+app.get(`${process.env.LOGOUT_ENDPOINT}`, (req: Request, res: Response) => {
+  handleLogout(req, res);
+});
+
+function handleLogout(req: Request, res: Response) {
+  // Code to handle the logout request 
+  res.clearCookie('token');
+  res.cookie('token', null, { expires: new Date(0), httpOnly: true });
+  res.status(200).json({ message: 'Logout successful' });
+}
+
+app.get('/login', (req: Request, res: Response) => {
+  res.redirect('/login.html');
 });
 
 app.listen(PORT, () => {

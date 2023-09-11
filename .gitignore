@@ -4,3 +4,4 @@ client/src/.env
 client/src/.env.development
 client/src/App.tsx
 client/src/.env.development
+server/.env

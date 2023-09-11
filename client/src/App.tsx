@@ -32,7 +32,9 @@ const LoginPage: React.FC<{ onLogin: (loginUser: User) => void }> = ({ onLogin }
       .then(response => {
         console.log(response.data);
         // Handle successful login
+        localStorage.setItem('isLoggedIn', 'true'); // Store login status in storage        
         onLogin(loginUser); // Update isLoggedIn state
+        sessionStorage.setItem('username', loginUser.username); // Store username in session storage
       })
       .catch(error => {
         console.error(error);
@@ -110,8 +112,9 @@ const LoginPage: React.FC<{ onLogin: (loginUser: User) => void }> = ({ onLogin }
   );
 }; 
 const App: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');  
+  const [username, setUsername] = useState(sessionStorage.getItem('username') || '');
+  
 
   const handleLogin = (loginUser: User) => {
     setIsLoggedIn(true);
@@ -130,7 +133,7 @@ const App: React.FC = () => {
             path="/"
             element={
               isLoggedIn ? (
-                <Home username={username} />
+                <Home username={username} setIsLoggedIn={setIsLoggedIn}/>
               ) : (
                 <Navigate to="/login" replace />
               )
