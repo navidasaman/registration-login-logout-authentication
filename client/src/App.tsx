@@ -32,13 +32,12 @@ const LoginPage: React.FC<{ onLogin: (loginUser: User) => void }> = ({ onLogin }
       .then(response => {
         console.log(response.data);
         // Handle successful login
-        localStorage.setItem('isLoggedIn', 'true'); // Store login status in storage        
+        sessionStorage.setItem('isLoggedIn', 'true'); // Store login status in storage        
         onLogin(loginUser); // Update isLoggedIn state
         sessionStorage.setItem('username', loginUser.username); // Store username in session storage
       })
       .catch(error => {
         console.error(error);
-        // Handle login error
       });
   };
 
@@ -46,11 +45,9 @@ const LoginPage: React.FC<{ onLogin: (loginUser: User) => void }> = ({ onLogin }
     axios.post(`${process.env.REACT_APP_API_URL}${process.env.REACT_APP_REGISTER_ENDPOINT}`, registerUser)
       .then(response => {
         console.log(response.data);
-        // Handle successful registration
       })
       .catch(error => {
         console.error(error);
-        // Handle registration error
       });
   };
 
@@ -112,7 +109,7 @@ const LoginPage: React.FC<{ onLogin: (loginUser: User) => void }> = ({ onLogin }
   );
 }; 
 const App: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');  
+  const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('isLoggedIn') === 'true');  
   const [username, setUsername] = useState(sessionStorage.getItem('username') || '');
   
 

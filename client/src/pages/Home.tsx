@@ -11,17 +11,13 @@ const Home: React.FC<HomeProps> = ({ username, setIsLoggedIn }) => {
     axios.get(`${process.env.REACT_APP_API_URL}${process.env.REACT_APP_LOGOUT_ENDPOINT}`)
       .then(response => {
         // Handle successful logout
-        localStorage.removeItem('isLoggedIn'); // Clear isLoggedIn 
+        sessionStorage.removeItem('isLoggedIn'); // Clear isLoggedIn 
         sessionStorage.removeItem('username'); // Clear username from session storage
-        //sessionStorage.removeItem('isLoggedIn'); // Clear login status from session storage
         console.log(response.data.message);
         setIsLoggedIn(false); // Update isLoggedIn state
-        //window.location.reload();
-        //window.location.href = 'http://localhost:3000/login';
       })
       .catch(error => {
         console.error(error);
-        // Handle logout error
       });
   };
 
