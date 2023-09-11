@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Home from './pages/Home'
 
 interface User {
   username: string;
   password: string;
 }
 
-const App: React.FC = () => {
+const LoginPage: React.FC<{ onLogin: (loginUser: User) => void }> = ({ onLogin }) => {
   const [loginUser, setLoginUser] = useState<User>({
     username: '',
     password: '',
@@ -30,6 +32,7 @@ const App: React.FC = () => {
       .then(response => {
         console.log(response.data);
         // Handle successful login
+        onLogin(loginUser); // Update isLoggedIn state
       })
       .catch(error => {
         console.error(error);
@@ -50,7 +53,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="bg-slate-400 flex justify-center items-center h-screen w-screen">
       <div className="bg-slate-100 p-8 shadow-md rounded-md">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         <input
@@ -101,8 +104,42 @@ const App: React.FC = () => {
           Register
         </button>
       </div>
+
+
+    </div>
+  );
+}; 
+const App: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+
+  const handleLogin = (loginUser: User) => {
+    setIsLoggedIn(true);
+    setUsername(loginUser.username);
+  };
+
+  return (
+    <div className="flex justify-center items-center h-screen bg-gray-200">
+      <Router>
+        <Routes>
+          <Route
+            path="/login"
+            element={isLoggedIn ? <Navigate to="/" replace /> : <LoginPage onLogin={handleLogin} />}
+          />
+          <Route
+            path="/"
+            element={
+              isLoggedIn ? (
+                <Home username={username} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+        </Routes>
+      </Router>
     </div>
   );
 };
-
 export default App;
+
